@@ -156,7 +156,7 @@ public class ServerSend
         using (Packet _packet = new Packet((int)ServerPackets.playerHealth))
         {
             _packet.Write(_player.id);
-            _packet.Write(_player.health);
+            _packet.Write(_player.hp);
 
             SendTCPDataToAll(_packet);
         }
@@ -209,6 +209,20 @@ public class ServerSend
     public static void ItemPickedUp(int _spawnerId, int _byPlayer)
     {
         using (Packet _packet = new Packet((int)ServerPackets.itemPickedUp))
+        {
+            _packet.Write(_spawnerId);
+            _packet.Write(_byPlayer);
+
+            SendTCPDataToAll(_packet);
+        }
+    }
+
+    /// <summary>버린 아이템ID, 버린 플레이어 TCP전송</summary>
+    /// <param name="_spawnerId">버린 아이템ID</param>
+    /// <param name="_byPlayer">아이템을 버린 플레이어</param>
+    public static void ItemThrow(int _spawnerId, int _byPlayer)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.itemThrow))
         {
             _packet.Write(_spawnerId);
             _packet.Write(_byPlayer);

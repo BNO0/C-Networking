@@ -21,6 +21,7 @@ public class ItemSpawner : MonoBehaviour
         StartCoroutine(SpawnItem());
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         //아이템이 존재하고 아이템의 트리거범위에 player가 들어오면 아이템을 획득함
@@ -33,6 +34,7 @@ public class ItemSpawner : MonoBehaviour
             }
         }
     }
+    */
 
     /// <summary>10초뒤에 아이템생성하고 클라이언트들에게 아이템스폰정보 전송</summary>
     /// <returns></returns>
@@ -46,11 +48,25 @@ public class ItemSpawner : MonoBehaviour
 
     /// <summary>아이템을 먹었다는 정보를 클라이언트에게 전송</summary>
     /// <param name="_byPlayer">아이템을 획득한 플레이어</param>
-    private void ItemPickedUp(int _byPlayer)
+    public void ItemPickedUp(int _byPlayer)
     {
-        hasItem = false;
-        ServerSend.ItemPickedUp(spawnerId, _byPlayer);
+        if (Server.clients[_byPlayer].player.AttemptPickupItem())
+        {
+            hasItem = false;
+            ServerSend.ItemPickedUp(spawnerId, _byPlayer);
 
-        StartCoroutine(SpawnItem());
+            //StartCoroutine(SpawnItem());
+        }
+    }
+
+    /// <summary>아이템을 버렸다는 정보를 클라이언트에게 전송</summary>
+    /// <param name="_byPlayer">아이템을 획득한 플레이어</param>
+    public void ItemThrow(int _byPlayer)
+    {
+        if (Server.clients[_byPlayer].player.AttemptThrowItem())
+        {
+            hasItem = true;
+            ServerSend.ItemThrow(spawnerId, _byPlayer);
+        }
     }
 }

@@ -140,7 +140,8 @@ public class Server
                 {(int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 {(int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
                 {(int)ClientPackets.playerShoot, ServerHandle.PlayerShoot },
-                {(int)ClientPackets.playerThrowItem, ServerHandle.PlayerThrowItem },
+                {(int)ClientPackets.PlayerLaunchItem, ServerHandle.PlayerLaunchItem },
+                {(int)ClientPackets.playerGetItem, ServerHandle.PlayerGetItem },
                 //{(int)ClientPackets.udpTestReceived, ServerHandle.UDPTestReceived }
             };
         Debug.Log("Initialized packets.");

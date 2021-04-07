@@ -6,8 +6,8 @@ public class PlayerManager : MonoBehaviour
 {
     public int id;
     public string username;                 //player 이름
-    public float health;                    //체력
-    public float maxHealth = 100f;          //최대체력
+    public float hp;                        //체력
+    public float maxHp = 100f;              //최대체력
     public int itemCount = 0;               //아이템 소요개수
     public MeshRenderer model;
 
@@ -15,17 +15,17 @@ public class PlayerManager : MonoBehaviour
     {
         id = _id;
         username = _username;
-        health = maxHealth;
+        hp = maxHp;
     }
 
     /// <summary>HP 세팅</summary>
     /// <param name="_health"></param>
     public void SetHealth(float _health)
     {
-        health = _health;
+        hp = _health;
 
         //HP가 0이 되면 죽음
-        if (health <= 0f)
+        if (hp <= 0f)
         {
             Die();
         }
@@ -41,6 +41,6 @@ public class PlayerManager : MonoBehaviour
     public void Respawn()
     {
         model.enabled = true;
-        SetHealth(maxHealth);
+        SetHealth(maxHp);
     }
 }

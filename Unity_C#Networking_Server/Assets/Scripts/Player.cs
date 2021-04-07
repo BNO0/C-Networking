@@ -14,8 +14,8 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;            //움직임속도
     public float jumpSpeed = 5f;            //점프속도
     public float throwForce = 600f;         //폭탄 던지기속도
-    public float health;                    //체력
-    public float maxHealth = 100f;          //최대체력
+    public float hp;                        //체력
+    public float maxHp = 100f;              //최대체력
     public int itemAmount = 0;              //아이템 소요개수
     public int maxItemAmount = 3;           //아이템 최대소요개수
 
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     {
         id = _id;
         username = _username;
-        health = maxHealth;
+        hp = maxHp;
 
         inputs = new bool[5];
     }
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     public void FixedUpdate()
     {
         //채력이 0이면 움직이지 못함
-        if(health <= 0f)
+        if(hp <= 0f)
         {
             return;
         }
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
     /// /// <param name="_viewDirection">총알의 방향</param>
     public void Shoot(Vector3 _viewDirection)
     {
-        if (health <= 0f)
+        if (hp <= 0f)
         {
             return;
         }
@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
     /// <param name="_viewDirection"></param>
     public void ThrowItem(Vector3 _viewDirection)
     {
-        if (health <= 0f)
+        if (hp <= 0f)
         {
             return;
         }
@@ -147,16 +147,16 @@ public class Player : MonoBehaviour
     public void TakeDamage(float _damage)
     {
         //죽은 적을 맞췄을 때 그냥 반환
-        if (health <= 0f)
+        if (hp <= 0f)
         {
             return;
         }
 
-        health -= _damage;
+        hp -= _damage;
         //맞춘 적의 hp가 0일 때 해당 object를 정지하고 코루틴을 통해 리스폰실행
-        if (health <= 0f)
+        if (hp <= 0f)
         {
-            health = 0f;
+            hp = 0f;
             controller.enabled = false;
             transform.position = new Vector3(0f, 25f, 0f);
             ServerSend.PlayerPosition(this);
@@ -171,7 +171,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
-        health = maxHealth;
+        hp = maxHp;
         controller.enabled = true;
         ServerSend.PlayerRespawned(this);
     }
@@ -186,6 +186,19 @@ public class Player : MonoBehaviour
         }
 
         itemAmount++;
+        return true;
+    }
+
+    /// <summary>아이템 소요개수 감소(0개인지 체크)</summary>
+    /// <returns></returns>
+    public bool AttemptThrowItem()
+    {
+        if (itemAmount <= 0 )
+        {
+            return false;
+        }
+
+        itemAmount--;
         return true;
     }
 }

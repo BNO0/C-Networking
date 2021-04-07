@@ -51,11 +51,33 @@ public class ServerHandle
     /// <summary>투척에 대한 패킷을 통해 아이템버리는 것 처리</summary>
     /// <param name="_fromClient"></param>
     /// <param name="_packet"></param>
-    public static void PlayerThrowItem(int _fromClient, Packet _packet)
+    public static void PlayerLaunchItem(int _fromClient, Packet _packet)
     {
         Vector3 _throwDirection = _packet.ReadVector3();
 
         Server.clients[_fromClient].player.ThrowItem(_throwDirection);
+    }
+
+    /// <summary>아이템획득에 관한 패킷을 통해 아이템획득 처리</summary>
+    /// <param name="_fromClient"></param>
+    /// <param name="_packet"></param>
+    public static void PlayerGetItem(int _fromClient, Packet _packet)
+    {
+        string _itemName = _packet.ReadString();
+        int _spawnerId = _packet.ReadInt();
+
+        ItemSpawner.spawners[_spawnerId].ItemPickedUp(Server.clients[_fromClient].player.id);
+    }
+
+    /// <summary>아이템버리기에 관한 패킷을 통해 아이템버리기 처리</summary>
+    /// <param name="_fromClient"></param>
+    /// <param name="_packet"></param>
+    public static void PlayerThrowItem(int _fromClient, Packet _packet)
+    {
+        string _itemName = _packet.ReadString();
+        int _spawnerId = _packet.ReadInt();
+
+        ItemSpawner.spawners[_spawnerId].ItemThrow(Server.clients[_fromClient].player.id);
     }
     /*
     /// <summary>welcome 잘받았다는 메세지 도착 시 클라이언트ID가 맞는지 확인 후 서버에 출력</summary>

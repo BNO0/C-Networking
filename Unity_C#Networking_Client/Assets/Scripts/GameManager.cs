@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     public static Dictionary<int, ProjectileManager> projectiles = new Dictionary<int, ProjectileManager>();//모든 폭탄정보 저장
     //public static Dictionary<int, EnemyManager> enemies = new Dictionary<int, EnemyManager>();
 
-    /// <summary>다른 player 프리팹</summary>
-    public GameObject localPlayerPrefab;    //자신 player 프리팹
+    /// <summary>자신 player 프리팹</summary>
+    public GameObject localPlayerPrefab;
     /// <summary>다른 player 프리팹</summary>
     public GameObject playerPrefab;
     /// <summary>아이템 프리팹</summary>
