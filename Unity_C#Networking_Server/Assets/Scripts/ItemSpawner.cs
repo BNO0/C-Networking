@@ -10,10 +10,13 @@ public class ItemSpawner : MonoBehaviour
 
     public int spawnerId;                   //스폰되는 아이템의 ID
     public bool hasItem = false;            //아이템이 존재하는지 체크
+    public MeshRenderer itemModel;          //아이템 mesh
 
     private void Start()
     {
+        itemModel = GetComponent<MeshRenderer>();
         hasItem = false;
+        itemModel.enabled = hasItem;
         spawnerId = nextSpawnerId;
         nextSpawnerId++;
         spawners.Add(spawnerId, this);
@@ -43,6 +46,7 @@ public class ItemSpawner : MonoBehaviour
         yield return new WaitForSeconds(10f);
 
         hasItem = true;
+        itemModel.enabled = hasItem;
         ServerSend.ItemSpawned(spawnerId);
     }
 
@@ -53,6 +57,7 @@ public class ItemSpawner : MonoBehaviour
         if (Server.clients[_byPlayer].player.AttemptPickupItem())
         {
             hasItem = false;
+            itemModel.enabled = hasItem;
             ServerSend.ItemPickedUp(spawnerId, _byPlayer);
 
             //StartCoroutine(SpawnItem());
@@ -61,12 +66,15 @@ public class ItemSpawner : MonoBehaviour
 
     /// <summary>아이템을 버렸다는 정보를 클라이언트에게 전송</summary>
     /// <param name="_byPlayer">아이템을 획득한 플레이어</param>
-    public void ItemThrow(int _byPlayer)
+    /// <param name="_position">아이템을 버릴 위치</param>
+    public void ItemThrow(int _byPlayer, Vector3 _position)
     {
         if (Server.clients[_byPlayer].player.AttemptThrowItem())
         {
             hasItem = true;
-            ServerSend.ItemThrow(spawnerId, _byPlayer);
+            itemModel.enabled = hasItem;
+            this.transform.position = _position;
+            ServerSend.ItemThrow(spawnerId, _byPlayer, _position);
         }
     }
 }

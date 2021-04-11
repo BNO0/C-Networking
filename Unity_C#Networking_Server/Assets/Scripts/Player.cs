@@ -107,23 +107,31 @@ public class Player : MonoBehaviour
 
     /// <summary>Physics.Raycast 를 통해 총알방향의 hit판정</summary>
     /// /// <param name="_viewDirection">총알의 방향</param>
-    public void Shoot(Vector3 _viewDirection)
+    public void Shoot(Vector3 _viewDirection, bool _EMPInstallFinished)
     {
-        if (hp <= 0f)
+        if (_EMPInstallFinished)
         {
-            return;
-        }
-
-        if (Physics.Raycast(shootOrigin.position, _viewDirection, out RaycastHit _hit, 25f))
-        {
-            if (_hit.collider.CompareTag("Player"))
+            if (hp <= 0f)
             {
-                _hit.collider.GetComponent<Player>().TakeDamage(50f);
+                return;
             }
-            /*else if (_hit.collider.CompareTag("Enemy"))
+
+            if (Physics.Raycast(shootOrigin.position, _viewDirection, out RaycastHit _hit, 25f))
             {
-                _hit.collider.GetComponent<Enemy>().TakeDamage(50f);
-            }*/
+                if (_hit.collider.CompareTag("Player"))
+                {
+                    _hit.collider.GetComponent<Player>().TakeDamage(50f);
+                }
+            }
+        }
+        else {
+            if (Physics.Raycast(shootOrigin.position, _viewDirection, out RaycastHit _hit, 25f))
+            {
+                if (_hit.collider.CompareTag("Player"))
+                {
+                    _hit.collider.GetComponent<Player>().KeyChange();
+                }
+            }
         }
     }
 
@@ -143,7 +151,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>받은 데이터를 통해 플레이어의 움직임을 계산(점프 포함)</summary>
+    /// <summary>damage 적용 후 클라이언트에 전송</summary>
     public void TakeDamage(float _damage)
     {
         //죽은 적을 맞췄을 때 그냥 반환
@@ -164,6 +172,12 @@ public class Player : MonoBehaviour
         }
 
         ServerSend.PlayerHealth(this);
+    }
+
+    /// <summary>클라이언트에 KeyChange 전송</summary>
+    public void KeyChange()
+    {
+        ServerSend.KeyChange(id);
     }
 
     /// <summary>리스폰</summary>

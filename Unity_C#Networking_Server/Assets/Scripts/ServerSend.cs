@@ -220,12 +220,14 @@ public class ServerSend
     /// <summary>버린 아이템ID, 버린 플레이어 TCP전송</summary>
     /// <param name="_spawnerId">버린 아이템ID</param>
     /// <param name="_byPlayer">아이템을 버린 플레이어</param>
-    public static void ItemThrow(int _spawnerId, int _byPlayer)
+    /// <param name="_position">아이템을 버린 위치</param>
+    public static void ItemThrow(int _spawnerId, int _byPlayer, Vector3 _position)
     {
         using (Packet _packet = new Packet((int)ServerPackets.itemThrow))
         {
             _packet.Write(_spawnerId);
             _packet.Write(_byPlayer);
+            _packet.Write(_position);
 
             SendTCPDataToAll(_packet);
         }
@@ -269,6 +271,18 @@ public class ServerSend
             _packet.Write(_projectile.transform.position);
 
             SendTCPDataToAll(_packet);
+        }
+    }
+
+    /// <summary>Key Change 실행</summary>
+    /// <param name="_playerID">플레이어 ID</param>
+    public static void KeyChange(int _playerID)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.keyChange))
+        {
+            _packet.Write(_playerID);
+
+            SendTCPData(_playerID, _packet);
         }
     }
     /*

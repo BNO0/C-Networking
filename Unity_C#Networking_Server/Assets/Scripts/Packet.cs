@@ -18,10 +18,11 @@ public enum ServerPackets
     createItemSpawner,  //아이템 생성
     itemSpawned,        //아이템 스폰
     itemPickedUp,       //아이템 획득
+    itemThrow,          //아이템 버리기
     spawnProjectile,    //폭탄 생성
     projectilePosition, //폭탄 위치
     projectileExploded, //폭탄 폭발여부
-    itemThrow,          //아이템 버리기
+    keyChange,          //Key Change
     //udpTest
 }
 
@@ -30,8 +31,8 @@ public enum ClientPackets
 {
     welcomeReceived = 1,//접속
     playerMovement,     //움직임
-    playerShoot,        //공격?
-    PlayerLaunchItem,    //아이템 던지기
+    playerShootBullet,        //공격?
+    playerShootBomb,    //아이템 던지기
     playerGetItem,      //아이템 획득
     playerThrowItem,    //아이템 버리기
     // udpTestReceived

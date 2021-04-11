@@ -41,17 +41,18 @@ public class ServerHandle
     /// <summary>player 공격에 대한 패킷을 통해 shoot 처리</summary>
     /// <param name="_fromClient"></param>
     /// <param name="_packet"></param>
-    public static void PlayerShoot(int _fromClient, Packet _packet)
+    public static void PlayerShootBullet(int _fromClient, Packet _packet)
     {
         Vector3 _shootDirection = _packet.ReadVector3();
+        bool _EMPInstallFinished = _packet.ReadBool();
 
-        Server.clients[_fromClient].player.Shoot(_shootDirection);
+        Server.clients[_fromClient].player.Shoot(_shootDirection, _EMPInstallFinished);
     }
 
     /// <summary>투척에 대한 패킷을 통해 아이템버리는 것 처리</summary>
     /// <param name="_fromClient"></param>
     /// <param name="_packet"></param>
-    public static void PlayerLaunchItem(int _fromClient, Packet _packet)
+    public static void PlayerShootBomb(int _fromClient, Packet _packet)
     {
         Vector3 _throwDirection = _packet.ReadVector3();
 
@@ -76,8 +77,9 @@ public class ServerHandle
     {
         string _itemName = _packet.ReadString();
         int _spawnerId = _packet.ReadInt();
+        Vector3 _position = _packet.ReadVector3();
 
-        ItemSpawner.spawners[_spawnerId].ItemThrow(Server.clients[_fromClient].player.id);
+        ItemSpawner.spawners[_spawnerId].ItemThrow(Server.clients[_fromClient].player.id, _position);
     }
     /*
     /// <summary>welcome 잘받았다는 메세지 도착 시 클라이언트ID가 맞는지 확인 후 서버에 출력</summary>

@@ -29,7 +29,7 @@ public enum ClientPackets
 {
     welcomeReceived = 1,//접속
     playerMovement,     //움직임
-    playerShoot,        //공격?
+    playerShootBullet,        //공격?
     playerThrowItem,    //아이템 버리기
     // udpTestReceived
 }

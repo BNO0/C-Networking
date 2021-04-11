@@ -48,9 +48,9 @@ public class ClientSend : MonoBehaviour
         }
     }
     /// <summary>player 공격에 대한 packet TCP전송(공격할 때 한번만 전송하므로 누락이 될지언정 오류가 발생하지는 않음)</summary>
-    public static void PlayerShoot(Vector3 _facing)
+    public static void PlayerShootBullet(Vector3 _facing)
     {
-        using (Packet _packet = new Packet((int)ClientPackets.playerShoot))
+        using (Packet _packet = new Packet((int)ClientPackets.playerShootBullet))
         {
             _packet.Write(_facing);
 
